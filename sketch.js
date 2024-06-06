@@ -59,7 +59,7 @@ function setup() {
   while (positions.length < vortexNumber) {
     let x = random(-width / 2 + 100, width / 2 - 100);
     let y = random(-height / 2 + 100, height / 2 - 100);
-    let z = random(-100, 200);
+    let z = random(-20, 200);
     let newPos = createVector(x, y, z);
     if (isFarEnough(newPos)) {
       positions.push(newPos);
@@ -194,25 +194,40 @@ function drawTextWindow() {
     let startX = -windowWidth / 4;
     let startY = -lines.length * 10;
     push();
-    translate(0, 0, 200);
+    translate(0, 0, 250); // Move the plane in front of the cubes
     textFont(inconsolata);
     textAlign(LEFT, TOP);
-    textSize(width/20);
+    textSize(16);
+
+    // Red layer
+    fill(255, 0, 0, textWindowOpacity);
     for (let i = 0; i < lines.length; i++) {
       let line = lines[i];
       let yOffset = i * 20;
       for (let j = 0; j < line.length; j++) {
         let char = line.charAt(j);
-        let charOpacity = textWindowOpacity * random(0.8, 1);
         let charX = startX + textWidth(line.substring(0, j)) + random(-0.5, 0.5);
         let charY = startY + yOffset + random(-0.5, 0.5);
-        fill(255, charOpacity);
+        text(char, charX + 1, charY + 1); // Slightly offset to create a shadow effect
+      }
+    }
+
+    // White layer
+    fill(255, textWindowOpacity);
+    for (let i = 0; i < lines.length; i++) {
+      let line = lines[i];
+      let yOffset = i * 20;
+      for (let j = 0; j < line.length; j++) {
+        let char = line.charAt(j);
+        let charX = startX + textWidth(line.substring(0, j)) + random(-0.5, 0.5);
+        let charY = startY + yOffset + random(-0.5, 0.5);
         text(char, charX, charY);
       }
     }
     pop();
   }
 }
+
 
 function splitTextIntoLines(text, maxCharsPerLine) {
   let words = text.split(' ');
